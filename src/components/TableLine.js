@@ -1,4 +1,5 @@
 import React from "react";
+import PercentChange from "./PercentChange";
 
 const TableLine = ({ coin, index }) => {
   const priceFormater = (num) => {
@@ -10,6 +11,13 @@ const TableLine = ({ coin, index }) => {
     } else {
       return num;
     }
+  };
+
+  const mktCapFormater = (num) => {
+    let newNum = String(num)
+      .split("")
+      .slice(0 - 6);
+    return Number(newNum.join(""));
   };
 
   return (
@@ -42,6 +50,21 @@ const TableLine = ({ coin, index }) => {
         </div>
       </div>
       <p>{priceFormater(coin.current_price).toLocaleString()} $</p>
+      <p className="mktcap">
+        {mktCapFormater(coin.market_cap).toLocaleString()} M$
+      </p>
+      <p className="volume">{coin.total_volume.toLocaleString()} $</p>
+      <PercentChange percent={coin.price_change_percentage_1h_in_currency} />
+      <PercentChange percent={coin.price_change_percentage_24h_in_currency} />
+      <PercentChange percent={coin.price_change_percentage_7d_in_currency} />
+      <PercentChange percent={coin.price_change_percentage_30d_in_currency} />
+      <PercentChange percent={coin.price_change_percentage_200d_in_currency} />
+      <PercentChange percent={coin.price_change_percentage_1y_in_currency} />
+      {coin.ath_change_percentage > -3 ? (
+        <p>ATH !</p>
+      ) : (
+        <PercentChange percent={coin.ath_change_percentage} />
+      )}
     </div>
   );
 };
