@@ -14,13 +14,12 @@ const PercentChange = ({ percent }) => {
     } else {
       setColor(colors.white1);
     }
-  }, [percent]);
+  }, []);
+
   return (
-    <div>
-      <p className="percent-change-container" style={{ color }}>
-        {percent ? percent.toFixed(1) + "%" : "-"}
-      </p>
-    </div>
+    <p className="percent-change-container" style={{ color }}>
+      {percent ? percent.toFixed(1) + "%" : "-"}
+    </p>
   );
 };
 

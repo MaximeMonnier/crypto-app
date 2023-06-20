@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { setListDisplay } from "../action/list.action";
 import { setStableState } from "../action/stable.action";
 
-const TablesFilters = () => {
+const TableFilters = () => {
   const [showStable, setShowStable] = useState(true);
+  const [showFavList, setShowFavList] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setStableState(showStable));
-  }, [showStable]);
+    dispatch(setListDisplay(showFavList));
+  }, [showStable, showFavList]);
 
   return (
     <div className="table-filters">
@@ -24,16 +27,22 @@ const TablesFilters = () => {
             {showStable ? "Avec stable coin" : "Sans stable coin"}
           </label>
         </div>
-        <div className="no-list-btn">
-          <p>Aucun liste</p>
+        <div
+          className={showFavList ? "no-list-btn" : "no-list-btn active"}
+          onClick={() => setShowFavList(false)}
+        >
+          <p>Aucune liste</p>
         </div>
-        <div className="fav-list">
-          <p>liste des favoris</p>
-          <img src="./assets/star-full.svg" alt="icon star" />
+        <div
+          className={showFavList ? "fav-list active" : "fav-list"}
+          onClick={() => setShowFavList(true)}
+        >
+          <p>Liste des favoris</p>
+          <img src="./assets/star-full.svg" alt="icon-star" />
         </div>
       </div>
     </div>
   );
 };
 
-export default TablesFilters;
+export default TableFilters;

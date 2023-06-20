@@ -1,15 +1,19 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import PercentChange from "./PercentChange";
-import TablesFilters from "./TablesFilters";
+import colors from "../styles/_settings.scss";
+import TableFilters from "./TableFilters";
 
 const HeaderInfos = () => {
-  const [HeaderData, setHeaderData] = useState([]);
+  const [headerData, setHeaderData] = useState([]);
+  const [btcPercent, setBtcPercent] = useState(null);
+  const [ethPercent, setEthPercent] = useState(null);
 
   useEffect(() => {
-    axios.get(`https://api.coingecko.com/api/v3/global`).then((res) => {
+    axios.get("https://api.coingecko.com/api/v3/global").then((res) => {
       setHeaderData(res.data.data);
-      console.log(HeaderData);
+      setBtcPercent(res.data.data.market_cap_percentage.btc.toFixed(1));
+      setEthPercent(res.data.data.market_cap_percentage.eth.toFixed(1));
     });
   }, []);
 
@@ -18,35 +22,36 @@ const HeaderInfos = () => {
       <ul className="title">
         <li>
           <h1>
-            <img id="toto" src="./assets/logo.png" alt="logo" /> Watch tower
+            <img src="./assets/logo.png" alt="" /> Watch Tower
           </h1>
         </li>
         <li>
-          crypto-monnaies :{" "}
-          {HeaderData.active_cryptocurrencies &&
-            HeaderData.active_cryptocurrencies.toLocaleString()}
+          Crypto-monnaies :{" "}
+          {headerData.active_cryptocurrencies &&
+            headerData.active_cryptocurrencies.toLocaleString()}
         </li>
-        <li>Marchés : {HeaderData.markets && HeaderData.markets}</li>
+        <li>Marchés : {headerData.markets}</li>
       </ul>
       <ul className="infos-mkt">
         <li className="global-mkt">
-          Global Market Cap :
-          <PercentChange
-            percent={HeaderData.market_cap_change_percentage_24h_usd}
-          />
+          Global Market Cap :{" "}
+          <strong
+            style={{
+              color:
+                headerData.market_cap_change_percentage_24h_usd >= 0
+                  ? colors.green1
+                  : colors.red1,
+            }}
+          >
+            <PercentChange
+              percent={headerData.market_cap_change_percentage_24h_usd}
+            />
+          </strong>
         </li>
-        <li>
-          BTC dominance :{" "}
-          {HeaderData.market_cap_percentage &&
-            HeaderData.market_cap_percentage.btc.toFixed(2) + "%"}
-        </li>
-        <li>
-          ETH dominance :{" "}
-          {HeaderData.market_cap_percentage &&
-            HeaderData.market_cap_percentage.eth.toFixed(2) + "%"}
-        </li>
+        <li>BTC dominance : {btcPercent}%</li>
+        <li>ETH dominance : {ethPercent}%</li>
       </ul>
-      <TablesFilters />
+      <TableFilters />
     </div>
   );
 };
