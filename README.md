@@ -6,7 +6,7 @@ The cryptographic watchtower is a web application where you can follow the crypt
 
 ## Live Demo
 
-A live demo is available here https://build-app-movie.vercel.app/
+A live demo is available here https://crypto-app-prod-ten.vercel.app/
 
 ## How to use
 
